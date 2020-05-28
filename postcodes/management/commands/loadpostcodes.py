@@ -5,6 +5,7 @@ import sys
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
+from alive_progress import alive_bar
 
 from postcodes.models import Postcode
 
@@ -24,13 +25,15 @@ class Command(BaseCommand):
             f = sys.stdin
 
         reader = csv.DictReader(f, fieldnames=['code', 'latitude', 'longitude', 'locality', 'region'])
-        for row in reader:
-            try:
-                Postcode(
-                    code=row['code'].upper(),
-                    centroid=Point(float(row['longitude']), float(row['latitude'])),
-                    city=row['locality'],
-                    province=row['region'],
-                ).save()
-            except ValidationError as e:
-                log.error("%s: %r" % (row['code'], e))
+        with alive_bar(943966) as bar:
+            for row in reader:
+                try:
+                    Postcode(
+                        code=row['code'].upper(),
+                        centroid=Point(float(row['longitude']), float(row['latitude'])),
+                        city=row['locality'],
+                        province=row['region'],
+                    ).save()
+                    bar()
+                except ValidationError as e:
+                    log.error("%s: %r" % (row['code'], e))

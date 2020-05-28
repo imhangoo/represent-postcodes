@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'django-appconf',
         'represent-boundaries',
+        'alive_progress'
     ],
     classifiers=[
         'Programming Language :: Python :: 3.4',
