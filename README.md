@@ -10,7 +10,7 @@ The [represent-canada](https://github.com/opennorth/represent-canada) repository
 
 Load postal code centroids with:
 
-    python manage.py loadpostcodes
+    python manage.py loadpostcodes data/shapefiles/postcodes/ocd-division/country:ca/Canada.csv
 
 Load postal code concordances with:
 
